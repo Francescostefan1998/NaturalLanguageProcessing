@@ -7,3 +7,20 @@ df = pd.read_csv('https://jse.amstat.org/v19n3/decock/AmesHousing.txt', sep='\t'
 df.head()
 
 print(df.head())
+
+print(df.shape)
+
+df['Central Air'] = df['Central Air'].map({'N': 0, 'Y':1})
+
+print(df.isnull().sum())
+
+df = df.dropna(axis=0)
+
+print(df.isnull().sum())
+
+import matplotlib.pyplot as plt
+from mlxtend.plotting import scatterplotmatrix
+scatterplotmatrix(df.values, figsize=(12, 10), names=df.columns, alpha=0.5)
+
+plt.tight_layout()
+plt.show()
