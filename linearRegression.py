@@ -28,7 +28,7 @@ from mlxtend.plotting import scatterplotmatrix
 import numpy as np
 from mlxtend.plotting import heatmap
 
-cm = np.correcoef(df.values.T)
+cm = np.corrcoef(df.values.T)
 hm = heatmap(cm, row_names=df.columns, column_names=df.columns)
 plt.tight_layout()
 plt.show()
