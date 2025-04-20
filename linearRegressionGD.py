@@ -95,3 +95,17 @@ slr.fit(X, y)
 y_pred = slr.predict(X)
 print(f'Slope: {slr.coef_[0]:.3f}')
 print(f'Intercept: {slr.intercept_:.3f}')
+
+lin_regplot(X, y, slr)
+plt.xlabel('Living area above ground in sqare feet')
+plt.ylabel('Sale price in U.S. dollars')
+plt.tight_layout()
+plt.show()
+
+# adding a column vector of "ones"
+Xb = np.hstack((np.ones((X.shape[0], 1)), X))
+w = np.zeros(X.shape[1])
+z = np.linalg.inv(np.dot(Xb.T, Xb))
+w = np.dot(z, np.dot(Xb.T, y))
+print(f'Slope: {w[1]:.3f}')
+print(f'Intercept: {w[0]:.3f}')
