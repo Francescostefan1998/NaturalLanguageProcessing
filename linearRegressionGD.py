@@ -26,3 +26,48 @@ class LinearRegressionGD:
     
     def predict(self, X):
         return self.net_input(X)
+    
+
+
+
+# now we see the LinearRegressionGD in action - we will use the Gr Living Area (size of the living area above)
+
+
+import pandas as pd
+
+columns = ['Overall Qual', 'Overall Cond', 'Gr Liv Area', 'Central Air', 'Total Bsmt SF', 'SalePrice']
+
+df = pd.read_csv('https://jse.amstat.org/v19n3/decock/AmesHousing.txt', sep='\t', usecols=columns)
+
+df.head()
+
+print(df.head())
+
+print(df.shape)
+
+df['Central Air'] = df['Central Air'].map({'N': 0, 'Y':1})
+
+print(df.isnull().sum())
+
+df = df.dropna(axis=0)
+
+print(df.isnull().sum())
+
+X = df[['Gr Liv Area']].values
+y = df['SalePrice'].values
+from sklearn.preprocessing import StandardScaler
+sc_x = StandardScaler()
+sc_y = StandardScaler()
+X_std = sc_x.fit_transform(X)
+y_std = sc_y.fit_transform(y[:, np.newaxis]).flatten()
+lr = LinearRegressionGD(eta=0.1)
+lr.fit(X_std, y_std)
+
+
+import matplotlib.pyplot as plt
+from mlxtend.plotting import scatterplotmatrix
+
+plt.plot(range(1, lr.n_iter+1), lr.losses_)
+plt.ylabel('MSE')
+plt.xlabel('Epoch')
+plt.show()
