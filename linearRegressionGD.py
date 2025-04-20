@@ -71,3 +71,27 @@ plt.plot(range(1, lr.n_iter+1), lr.losses_)
 plt.ylabel('MSE')
 plt.xlabel('Epoch')
 plt.show()
+
+def lin_regplot(X, y, model):
+    plt.scatter(X, y, c='steelblue', edgecolor='white', s=70)
+    plt.plot(X, model.predict(X), color='black', lw=2)
+
+lin_regplot(X_std, y_std, lr)
+plt.xlabel(' Living area above ground (standardized)')
+plt.ylabel('Sale price (standardized)')
+plt.show()
+
+feature_std = sc_x.transform(np.array([[2500]]))
+target_std = lr.predict(feature_std)
+target_reverted = sc_y.inverse_transform(target_std.reshape(-1, 1))
+print(f'Sales price: ${target_reverted.flatten()[0]:.2f}')
+
+print(f'Slope: {lr.w_[0]:.3f}')
+print(f'Intercept: {lr.b_[0]:.3f}')
+
+from sklearn.linear_model import LinearRegression
+slr = LinearRegression()
+slr.fit(X, y)
+y_pred = slr.predict(X)
+print(f'Slope: {slr.coef_[0]:.3f}')
+print(f'Intercept: {slr.intercept_:.3f}')
