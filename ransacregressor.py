@@ -159,12 +159,14 @@ y = df['SalePrice'].values
 X = X[(df['Gr Liv Area'] < 4000)]
 y = y[(df['Gr Liv Area'] < 4000)]
 
+X = df[['Overall Qual']].values
+y = df['SalePrice'].values
 regr = LinearRegression()
 # create a quadratic and cubic features
 quadratic = PolynomialFeatures(degree=2)
 cubic = PolynomialFeatures(degree=3)
 X_quad = quadratic.fit_transform(X)
-X_cubic = quadratic.fit_transform(X)
+X_cubic = cubic.fit_transform(X)
 
 # fit to features
 X_fit = np.arange(X.min()-1, X.max()+2, 1)[:, np.newaxis]
@@ -187,4 +189,21 @@ plt.plot(X_fit, y_quad_fit, label=f'Quadratic (d=2), $R^2$={quadratic_r2:.2f}', 
 plt.plot(X_fit, y_cubic_fit, label=f'Cubic (d=3), $R^2$={cubic_r2:.2f}', color='green', lw=2, linestyle='--')
 plt.xlabel('Living area above ground in sqare feet')
 plt.legend(loc='upper left')
+plt.show()
+
+
+from sklearn.tree import DecisionTreeRegressor
+X = df[['Gr Liv Area']].values
+y = df['SalePrice'].values
+tree = DecisionTreeRegressor(max_depth=3)
+tree.fit(X, y)
+
+def lin_regplot(X, y, model):
+    plt.scatter(X, y, c='steelblue', edgecolor='white', s=70)
+    plt.plot(X, model.predict(X), color='black', lw=2)
+
+sort_idx = X.flatten().argsort()
+lin_regplot(X[sort_idx], y[sort_idx], tree)
+plt.xlabel('Living area above ground in sqare feet')
+plt.ylabel('Sale price in U.S. dollars')
 plt.show()
